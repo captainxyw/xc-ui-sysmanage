@@ -105,7 +105,9 @@
                     type: 'success'
                   });
                   this.$refs['pageForm'].resetFields();
-                }else{
+                }else if(res.message) {
+                  this.$message.error(res.message);
+                } else{
                   this.$message.error('提交失败');
                 }
               });
