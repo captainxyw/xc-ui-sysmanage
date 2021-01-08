@@ -43,6 +43,7 @@
         <template slot-scope="page">
           <el-button size="small" type="text" @click="edit(page.row.pageId)">编辑</el-button>
           <el-button size="small" type="text" @click="del(page.row.pageId)">删除</el-button>
+          <el-button size="small" type="text" @click="preview(page.row.pageId)">页面预览</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -91,7 +92,7 @@ export default {
       this.params.page = page;
       this.query()
     },
-    edit: function(pageId) {
+    edit: function (pageId) {
       //打开修改页面
       this.$router.push({
         path: '/cms/page/edit/' + pageId
@@ -101,15 +102,17 @@ export default {
       this.$confirm("您确认删除吗？", "提示", {}).then(res => {
         //调用服务端接口
         cmsApi.page_del(pageId).then(res => {
-          if(res.success) {
+          if (res.success) {
             this.$message.success("删除成功");
             //刷新页面
             this.query();
-          }else
+          } else
             this.$message.error("删除失败");
         })
       });
-
+    },
+    preview(pageId) {
+      window.open("http://www.xuecheng.com/cms/preview/" + pageId);
     }
   },
   created() {
