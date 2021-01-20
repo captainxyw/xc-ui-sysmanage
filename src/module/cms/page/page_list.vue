@@ -44,6 +44,7 @@
           <el-button size="small" type="text" @click="edit(page.row.pageId)">编辑</el-button>
           <el-button size="small" type="text" @click="del(page.row.pageId)">删除</el-button>
           <el-button size="small" type="text" @click="preview(page.row.pageId)">页面预览</el-button>
+          <el-button size="small" type="primary" plain @click="postPage(page.row.pageId)">发布</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -113,7 +114,20 @@ export default {
     },
     preview(pageId) {
       window.open("http://www.xuecheng.com/cms/preview/" + pageId);
-    }
+    },
+    postPage(id) {
+      this.$confirm('确认发布该页面吗?', '提示', {}).then(() => {
+        cmsApi.page_postPage(id).then((res) => {
+          if (res.success) {
+            console.log('发布页面id=' + id);
+            this.$message.success('发布成功，请稍后查看结果');
+          } else {
+            this.$message.error('发布失败');
+          }
+        });
+      }).catch(() => {
+      });
+    },
   },
   created() {
     //取出路由中的参数，赋值给数据对象
